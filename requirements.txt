@@ -135,7 +135,7 @@ poe-api==0.5.3
 postgrest==0.17.0
 prompt_toolkit==3.0.50
 proto-plus==1.26.0
-protobuf==3.20.3
+protobuf==4.25.3
 psutil==6.1.0
 ptyprocess==0.7.0
 pure_eval==0.2.3
