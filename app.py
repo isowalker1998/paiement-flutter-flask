@@ -29,7 +29,7 @@ def payer():
         payload = {
             "amount": montant,
             "shop_name": nom,
-            "message":  description,
+            "message":  'description',
             "success_url": "https://tonsite.com/success",
             "failure_url": "https://tonsite.com/failure",
             "order_id":article_id
