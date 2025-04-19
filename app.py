@@ -17,6 +17,13 @@ def payer():
         montant = data.get('montant')
         article_id = data.get('id')
         description = data.get('description')
+        try:
+            montant = int(montant)
+        except (ValueError, TypeError):
+            return jsonify({
+                'status': 'error',
+                'message': 'Le montant doit être un entier valide.'
+    }), 400
 
         if not nom or not montant:
             return jsonify({
