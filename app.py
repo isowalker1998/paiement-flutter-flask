@@ -15,6 +15,8 @@ def payer():
         data = request.get_json()
         nom = data.get('nom')
         montant = data.get('montant')
+        article_id = data.get('id')
+        description = data.get('description')
 
         if not nom or not montant:
             return jsonify({
@@ -27,10 +29,10 @@ def payer():
         payload = {
             "amount": montant,
             "shop_name": nom,
-            "message": f"Paiement de {nom}",
+            "message":  description,
             "success_url": "https://tonsite.com/success",
             "failure_url": "https://tonsite.com/failure",
-            "order_id": order_id
+            "order_id":article_id
         }
         headers = {
             "api-key": "lygosapp-43b002d7-b622-4107-9e8d-319c2275e39f",
