@@ -16,7 +16,7 @@ def payer():
         nom = data.get('nom')
         montant = data.get('montant')
         # article_id = data.get('id')
-        # description = data.get('description')
+        description = data.get('description')
         try:
             montant = int(montant)
         except (ValueError, TypeError):
@@ -36,7 +36,7 @@ def payer():
         payload = {
             "amount": montant,
             "shop_name": nom,
-            "message":  'description',
+            "message":   f"{description}",
             "success_url": "https://tonsite.com/success",
             "failure_url": "https://tonsite.com/failure",
             "order_id":    order_id 
