@@ -65,23 +65,13 @@ CORS(app)  # <-- Ajout ici pour autoriser toutes les origines
 #             'details': str(e)
 #         }), 500
 
-
 @app.route('/payer', methods=['POST'])
 def payer():
     try:
         data = request.get_json()
         nom = data.get('nom')
         montant = data.get('montant')
-        article_id = data.get('id')
         description = data.get('description')
-
-        try:
-            montant = int(montant)
-        except (ValueError, TypeError):
-            return jsonify({
-                'status': 'error',
-                'message': 'Le montant doit être un entier valide.'
-            }), 400
 
         if not nom or not montant:
             return jsonify({
@@ -94,34 +84,21 @@ def payer():
         payload = {
             "amount": montant,
             "shop_name": nom,
-            "message": description,
+            "message": f"{description}",
             "success_url": "https://tonsite.com/success",
             "failure_url": "https://tonsite.com/failure",
-            "order_id": str(article_id)
+            "order_id": order_id
         }
-
         headers = {
             "api-key": "lygosapp-43b002d7-b622-4107-9e8d-319c2275e39f",
             "Content-Type": "application/json"
         }
 
         response = requests.post("https://api.lygosapp.com/v1/gateway", json=payload, headers=headers)
-
-        try:
-            response.raise_for_status()
-        except Exception as api_err:
-            print("Erreur de l'API Lygos :", response.status_code, response.text)
-            raise api_err
+        response.raise_for_status()  # Provoque une erreur si la réponse est mauvaise
 
         data = response.json()
         lien_paiement = data.get("link")
-
-        if not lien_paiement:
-            print("Réponse inattendue :", data)
-            return jsonify({
-                'status': 'error',
-                'message': "L'API n'a pas retourné de lien de paiement."
-            }), 500
 
         return jsonify({
             'status': 'success',
@@ -130,7 +107,6 @@ def payer():
         }), 200
 
     except Exception as e:
-        print("Erreur côté serveur :", e)
         return jsonify({
             'status': 'error',
             'message': 'Erreur interne',
